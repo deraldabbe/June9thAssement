@@ -25,4 +25,29 @@ app.post(`/api/affirmation`, (req, res) => {
 const generateCustomAffirmation = (topic) => {
     return `You are capable of achieving great things in ${topic}!`
 }
+
+const goalsData = {}
+
+app.put(`/api/goal`, (req, res) => {
+    const { goal } = req.body
+    updateProgress(goal)
+    res.status(200).send(`Progress updated successfully.`)
+})
+
+const updateProgress = (goal) => {
+    if (!goalsData[goal]) {
+        goalsData[goal] = 0
+    }
+    goalsData[goal]++
+}
+
+app.delete(`/api/goal`, (req, res) => {
+    const { goal } = req.body
+    deleteGoal(goal)
+    res.status(200).send(`Goal deleted successfully`)
+})
+
+const deleteGoal = (goal) => {
+    delete goalsData[goal]
+}
 app.listen(4000, () => console.log("Server running on 4000"));
